@@ -15,7 +15,8 @@
         "default_popup": "popup/popup.html"
     },
     "permissions": [
-        "scripting"
+        "scripting",
+        "storage"
     ],
     "host_permissions": [
       "*://*.facebook.com/*"
