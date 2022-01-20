@@ -51,7 +51,7 @@
     const interval = setInterval(() => {
       posts = [...document.querySelectorAll(`div[role="article"][aria-labelledby]:not([articleCovered]), [data-pagelet="MainFeed"] > * > * > div:not([articleCovered]`)];
       posts.forEach(post => {
-        [...post.querySelectorAll('div')]?.filter(item => item.innerText == 'See more')[0]?.click();
+        [...post.querySelectorAll('div')]?.filter(item => item.innerText == 'Voir plus')[0]?.click();
       })
 
       console.log(posts.length);

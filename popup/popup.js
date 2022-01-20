@@ -9,7 +9,7 @@ document.querySelector('#Get_Data').addEventListener('click', () => {
         chrome.scripting.executeScript(
             {
               target: {tabId: currentTab.id},
-              files: ['scripts/json2csv.js','scripts/capture-data.js']
+              files: ['scripts/capture-data.js']
             },
             () => { console.log("Executed Script")});
       }
