@@ -1,6 +1,7 @@
 
 
 (async () => {
+  alert('Started Scraping Posts Data');
 
   const exportPosts = (arr) => {
     const items = arr;
@@ -31,7 +32,7 @@
       const description = article.querySelector('div[dir="auto"]')?.innerText;
       const date = article.querySelectorAll('a')[3]?.ariaLabel;
       data['Date'] = date;
-      const formattedDescription = description.replace(/(<([^>]+)>)/ig, '').replace(/(\r\n|\n|\r)/gm, "").replace('#', '');
+      const formattedDescription = description?.replace(/(<([^>]+)>)/ig, '')?.replace(/(\r\n|\n|\r)/gm, "")?.replace('#', '');
       data['Description'] = formattedDescription;
         const imgSrc = photoLink[0]?.querySelector('img')?.src;
         data['Media'] = imgSrc || [...article.querySelectorAll('a')]?.filter(item => item.href.includes('videos'))[0]?.href
