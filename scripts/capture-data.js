@@ -2,24 +2,47 @@
 
 (async () => {
 
+  const exportPosts = (arr) => {
+    const items = arr;
+    const replacer = (key, value) => value === null ? '' : value 
+    const header = Object.keys(items[0])
+    const csv = [
+      header.join(','), 
+      ...items.map(row => header.map(fieldName => JSON.stringify(row[fieldName], replacer)).join(','))
+    ].join('\r\n')
+
+    let link = document.querySelector(['[id="exportLink"]']) || document.createElement("a");
+    link.id = 'exportLink';
+    link.setAttribute("href", 'data:text/csv;charset=utf-8,' + encodeURI(csv));
+    link.setAttribute("download", `${document.title}.csv`);
+    link.addEventListener('click', () => {
+      console.log("Downloaded!");
+    })
+    link.click();
+  }
   const arr = [];
 
   function coverArticles(posts) {
 
-    [...posts].forEach(article => {
+    for (let i = 0; i < [...posts].length; i++) {
+      let article = [...posts][i];
       let data = {}
       const photoLink = [...article.querySelectorAll('a')]?.filter(item => item.href.includes('photos'));
       const description = article.querySelector('div[dir="auto"]')?.innerText;
-      data['description'] = description;
-      if (photoLink.length) {
-        const imgSrc = photoLink[0].querySelector('img').src;
-        data['media'] = imgSrc;
-      }
-      arr.push(data);
-      
-    })
-console.log(arr);
+      const date = article.querySelectorAll('a')[3]?.ariaLabel;
+      data['Date'] = date;
+      const formattedDescription = description.replace(/(<([^>]+)>)/ig, '').replace(/(\r\n|\n|\r)/gm, "").replace('#', '');
+      data['Description'] = formattedDescription;
+        const imgSrc = photoLink[0]?.querySelector('img')?.src;
+        data['Media'] = imgSrc || [...article.querySelectorAll('a')]?.filter(item => item.href.includes('videos'))[0]?.href
+        || "NO MEDIA";
     
+      arr.push(data);
+    }
+    if (arr.length) {
+      exportPosts(arr);
+    }
+
   }
 
 
@@ -41,7 +64,7 @@ console.log(arr);
         clearInterval(interval);
         posts = posts.slice(0, CS.number);
         coverArticles(posts);
-      } 
+      }
     }, 5000)
 
 
