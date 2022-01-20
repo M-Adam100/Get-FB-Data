@@ -11,6 +11,7 @@
       header.join(','), 
       ...items.map(row => header.map(fieldName => JSON.stringify(row[fieldName], replacer)).join(','))
     ].join('\r\n')
+    console.log(csv);
 
     let link = document.querySelector(['[id="exportLink"]']) || document.createElement("a");
     link.id = 'exportLink';
@@ -32,10 +33,10 @@
       const description = article.querySelector('div[dir="auto"]')?.innerText;
       const date = article.querySelectorAll('a')[3]?.ariaLabel;
       data['Date'] = date;
-      const formattedDescription = description?.replace(/(<([^>]+)>)/ig, '')?.replace(/(\r\n|\n|\r)/gm, "")?.replace('#', '');
+      const formattedDescription = description?.replace(/(<([^>]+)>)/ig, '')?.replaceAll(/(\r\n|\n|\r)/gm, "")?.replaceAll('#', '');
       data['Description'] = formattedDescription;
-        const imgSrc = photoLink[0]?.querySelector('img')?.src;
-        data['Media'] = imgSrc || [...article.querySelectorAll('a')]?.filter(item => item.href.includes('videos'))[0]?.href
+        const imgSrc = photoLink[0]?.querySelector('img')?.src?.replaceAll('#', '');
+        data['Media'] = imgSrc || [...article.querySelectorAll('a')]?.filter(item => item.href.includes('videos'))[0]?.href.replaceAll('#', '')
         || "NO MEDIA";
     
       arr.push(data);
